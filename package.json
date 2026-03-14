@@ -1,0 +1,13 @@
+{
+  "name": "mattybokks",
+  "version": "1.0.0",
+  "description": "Mattybokks - Premium Digital Book Marketplace",
+  "scripts": {
+    "dev:backend": "cd backend && npm run dev",
+    "dev:frontend": "cd frontend && npm run dev",
+    "install:all": "cd backend && npm install && cd ../frontend && npm install --legacy-peer-deps",
+    "build:frontend": "cd frontend && npm run build",
+    "db:seed": "cd backend && npm run db:seed",
+    "start": "cd backend && npm start"
+  }
+}
