@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom'
 import { Download, Star, BookOpen, Lock } from 'lucide-react'
 import { formatPrice, formatNumber } from '../../lib/utils'
+import { assetURL } from '../../lib/api'
 
 export default function BookCard({ book, featured = false }) {
   const hasImage = book.coverImage
@@ -15,7 +16,7 @@ export default function BookCard({ book, featured = false }) {
         <div className={`relative ${featured ? 'aspect-[2/1]' : 'aspect-[3/4]'} overflow-hidden bg-gradient-to-br from-violet-900/40 to-purple-900/20`}>
           {hasImage ? (
             <img
-              src={book.coverImage}
+              src={assetURL(book.coverImage)}
               alt={book.title}
               className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
             />

@@ -7,6 +7,7 @@ import Badge from '../../components/ui/Badge'
 import Card from '../../components/ui/Card'
 import { PageSpinner } from '../../components/ui/Spinner'
 import BookFormModal from '../../components/admin/BookFormModal'
+import { assetURL } from '../../lib/api'
 
 export default function BooksPage() {
   const [page, setPage] = useState(1)
@@ -114,7 +115,7 @@ export default function BooksPage() {
                       <div className="flex items-center gap-3">
                         <div className="w-10 h-14 rounded-lg overflow-hidden bg-purple-900/20 flex-shrink-0 border border-white/10">
                           {book.coverImage ? (
-                            <img src={book.coverImage} alt={book.title} className="w-full h-full object-cover" />
+                            <img src={assetURL(book.coverImage)} alt={book.title} className="w-full h-full object-cover" />
                           ) : (
                             <div className="w-full h-full flex items-center justify-center">
                               <BookOpen size={16} className="text-purple-500/40" />

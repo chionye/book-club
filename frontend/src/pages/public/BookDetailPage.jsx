@@ -7,7 +7,7 @@ import { PageSpinner } from '../../components/ui/Spinner'
 import Badge from '../../components/ui/Badge'
 import Button from '../../components/ui/Button'
 import PaymentModal from '../../components/public/PaymentModal'
-import { freeDownloadURL } from '../../lib/api'
+import { freeDownloadURL, assetURL } from '../../lib/api'
 
 export default function BookDetailPage() {
   const { id } = useParams()
@@ -15,6 +15,11 @@ export default function BookDetailPage() {
   const [showPayment, setShowPayment] = useState(false)
 
   if (isLoading) return <PageSpinner />
+
+  // tags may arrive as a JSON string from MySQL
+  const tags = Array.isArray(book?.tags)
+    ? book.tags
+    : (() => { try { return JSON.parse(book?.tags || '[]') } catch { return [] } })()
 
   if (!book) {
     return (
@@ -48,7 +53,7 @@ export default function BookDetailPage() {
             {/* Cover */}
             <div className="relative rounded-2xl overflow-hidden aspect-[3/4] bg-gradient-to-br from-violet-900/40 to-purple-900/20 border border-white/10 shadow-2xl shadow-purple-900/30 mb-6">
               {book.coverImage ? (
-                <img src={book.coverImage} alt={book.title} className="w-full h-full object-cover" />
+                <img src={assetURL(book.coverImage)} alt={book.title} className="w-full h-full object-cover" />
               ) : (
                 <div className="w-full h-full flex items-center justify-center">
                   <BookOpen size={80} className="text-purple-500/30" />
@@ -168,11 +173,11 @@ export default function BookDetailPage() {
             )}
 
             {/* Tags */}
-            {book.tags?.length > 0 && (
+            {tags.length > 0 && (
               <div className="mb-8">
                 <h3 className="text-sm font-semibold text-slate-400 mb-3 uppercase tracking-wider">Tags</h3>
                 <div className="flex flex-wrap gap-2">
-                  {book.tags.map(tag => (
+                  {tags.map(tag => (
                     <span key={tag} className="px-3 py-1 rounded-full text-xs bg-white/5 border border-white/10 text-slate-400">
                       #{tag}
                     </span>

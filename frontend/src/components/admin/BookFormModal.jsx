@@ -48,7 +48,12 @@ export default function BookFormModal({ book, onClose }) {
       language: book?.language || 'English',
       isbn: book?.isbn || '',
       previewText: book?.previewText || '',
-      tagsInput: book?.tags?.join(', ') || '',
+      tagsInput: (() => {
+        const t = book?.tags
+        if (!t) return ''
+        const arr = Array.isArray(t) ? t : (() => { try { return JSON.parse(t) } catch { return [] } })()
+        return arr.join(', ')
+      })(),
     },
   })
 
