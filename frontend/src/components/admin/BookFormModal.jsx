@@ -3,7 +3,7 @@ import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import { useDropzone } from 'react-dropzone'
-import { X, Upload, FileText, Image, BookOpen, Lock, Globe, DollarSign, Tag, AlignLeft, Info } from 'lucide-react'
+import { X, Upload, FileText, Image, BookOpen, Lock, Globe, DollarSign, Tag, AlignLeft, Info, Crown } from 'lucide-react'
 import { useCreateBook, useUpdateBook } from '../../hooks/useBooks'
 import Button from '../ui/Button'
 import Input from '../ui/Input'
@@ -18,6 +18,7 @@ const schema = z.object({
   price: z.string().optional(),
   isPaid: z.boolean(),
   isPublished: z.boolean(),
+  isPremium: z.boolean(),
   pages: z.string().optional(),
   language: z.string().optional(),
   isbn: z.string().optional(),
@@ -44,6 +45,7 @@ export default function BookFormModal({ book, onClose }) {
       price: book?.price?.toString() || '',
       isPaid: book?.isPaid ?? true,
       isPublished: book?.isPublished ?? true,
+      isPremium: book?.isPremium ?? false,
       pages: book?.pages?.toString() || '',
       language: book?.language || 'English',
       isbn: book?.isbn || '',
@@ -195,17 +197,41 @@ export default function BookFormModal({ book, onClose }) {
             )}
           </div>
 
-          {/* Published toggle */}
-          <div className="flex items-center justify-between p-4 rounded-xl bg-white/[0.02] border border-white/[0.06]">
-            <div>
-              <p className="text-sm font-medium text-white">Published</p>
-              <p className="text-xs text-slate-500">Visible in store to customers</p>
+          {/* Published + Premium toggles */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div className="flex items-center justify-between p-4 rounded-xl bg-white/[0.02] border border-white/[0.06]">
+              <div>
+                <p className="text-sm font-medium text-white">Published</p>
+                <p className="text-xs text-slate-500">Visible in store</p>
+              </div>
+              <div
+                className={`w-11 h-6 rounded-full transition-all relative cursor-pointer ${watch('isPublished') ? 'bg-emerald-600' : 'bg-white/10'}`}
+                onClick={() => setValue('isPublished', !watch('isPublished'))}
+              >
+                <div className={`absolute top-1 w-4 h-4 rounded-full bg-white shadow transition-all ${watch('isPublished') ? 'left-6' : 'left-1'}`} />
+              </div>
             </div>
+
             <div
-              className={`w-11 h-6 rounded-full transition-all relative cursor-pointer ${watch('isPublished') ? 'bg-emerald-600' : 'bg-white/10'}`}
-              onClick={() => setValue('isPublished', !watch('isPublished'))}
+              className={`flex items-center justify-between p-4 rounded-xl border transition-all cursor-pointer ${
+                watch('isPremium')
+                  ? 'bg-amber-500/10 border-amber-500/30'
+                  : 'bg-white/[0.02] border-white/[0.06]'
+              }`}
+              onClick={() => setValue('isPremium', !watch('isPremium'))}
             >
-              <div className={`absolute top-1 w-4 h-4 rounded-full bg-white shadow transition-all ${watch('isPublished') ? 'left-6' : 'left-1'}`} />
+              <div>
+                <p className={`text-sm font-medium flex items-center gap-1.5 ${watch('isPremium') ? 'text-amber-400' : 'text-white'}`}>
+                  <Crown size={14} className={watch('isPremium') ? 'text-amber-400' : 'text-slate-500'} />
+                  Premium
+                </p>
+                <p className="text-xs text-slate-500">Shows premium badge</p>
+              </div>
+              <div
+                className={`w-11 h-6 rounded-full transition-all relative ${watch('isPremium') ? 'bg-amber-500' : 'bg-white/10'}`}
+              >
+                <div className={`absolute top-1 w-4 h-4 rounded-full bg-white shadow transition-all ${watch('isPremium') ? 'left-6' : 'left-1'}`} />
+              </div>
             </div>
           </div>
 

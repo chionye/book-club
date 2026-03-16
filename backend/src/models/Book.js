@@ -88,6 +88,10 @@ const Book = sequelize.define('Book', {
     type: DataTypes.JSON,
     defaultValue: [],
   },
+  isPremium: {
+    type: DataTypes.BOOLEAN,
+    defaultValue: false,
+  },
 }, {
   tableName: 'books',
 });

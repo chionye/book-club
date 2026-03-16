@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import { Download, Star, BookOpen, Lock } from 'lucide-react'
+import { Download, Star, BookOpen, Lock, Crown } from 'lucide-react'
 import { formatPrice, formatNumber } from '../../lib/utils'
 import { assetURL } from '../../lib/api'
 
@@ -11,7 +11,11 @@ export default function BookCard({ book, featured = false }) {
       to={`/books/${book.id}`}
       className={`group block book-card ${featured ? 'col-span-2' : ''}`}
     >
-      <div className="relative rounded-2xl overflow-hidden border border-white/[0.06] bg-gradient-to-br from-white/[0.04] to-transparent hover:border-purple-500/30 transition-all duration-300 hover:shadow-xl hover:shadow-purple-900/20">
+      <div className={`relative rounded-2xl overflow-hidden border bg-gradient-to-br from-white/[0.04] to-transparent transition-all duration-300 hover:shadow-xl ${
+        book.isPremium
+          ? 'border-amber-500/30 hover:border-amber-400/60 hover:shadow-amber-900/30'
+          : 'border-white/[0.06] hover:border-purple-500/30 hover:shadow-purple-900/20'
+      }`}>
         {/* Cover Image */}
         <div className={`relative ${featured ? 'aspect-[2/1]' : 'aspect-[3/4]'} overflow-hidden bg-gradient-to-br from-violet-900/40 to-purple-900/20`}>
           {hasImage ? (
@@ -43,14 +47,20 @@ export default function BookCard({ book, featured = false }) {
             )}
           </div>
 
-          {/* Genre tag */}
-          {book.genre && (
-            <div className="absolute top-3 left-3">
+          {/* Top-left: premium + genre stacked */}
+          <div className="absolute top-3 left-3 flex flex-col gap-1.5">
+            {book.isPremium && (
+              <div className="flex items-center gap-1 px-2 py-1 rounded-full bg-gradient-to-r from-amber-500 to-yellow-400 shadow-lg shadow-amber-900/40">
+                <Crown size={9} className="text-amber-900" />
+                <span className="text-[9px] font-black uppercase tracking-wider text-amber-900">Premium</span>
+              </div>
+            )}
+            {book.genre && (
               <span className="px-2.5 py-1 rounded-full text-xs font-medium bg-purple-500/20 backdrop-blur-sm border border-purple-500/30 text-purple-300">
                 {book.genre}
               </span>
-            </div>
-          )}
+            )}
+          </div>
         </div>
 
         {/* Info */}

@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { useParams, Link } from 'react-router-dom'
-import { ArrowLeft, BookOpen, Download, Lock, Star, Globe, Hash, FileText, User, ChevronRight, Sparkles } from 'lucide-react'
+import { ArrowLeft, BookOpen, Download, Lock, Star, Globe, Hash, FileText, User, ChevronRight, Sparkles, Crown } from 'lucide-react'
 import { useBook } from '../../hooks/useBooks'
 import { formatPrice, formatNumber, formatFileSize, formatDate } from '../../lib/utils'
 import { PageSpinner } from '../../components/ui/Spinner'
@@ -51,7 +51,11 @@ export default function BookDetailPage() {
           {/* Cover + Buy Card */}
           <div className="lg:col-span-2">
             {/* Cover */}
-            <div className="relative rounded-2xl overflow-hidden aspect-[3/4] bg-gradient-to-br from-violet-900/40 to-purple-900/20 border border-white/10 shadow-2xl shadow-purple-900/30 mb-6">
+            <div className={`relative rounded-2xl overflow-hidden aspect-[3/4] bg-gradient-to-br from-violet-900/40 to-purple-900/20 border mb-6 shadow-2xl ${
+              book.isPremium
+                ? 'border-amber-500/40 shadow-amber-900/30'
+                : 'border-white/10 shadow-purple-900/30'
+            }`}>
               {book.coverImage ? (
                 <img src={assetURL(book.coverImage)} alt={book.title} className="w-full h-full object-cover" />
               ) : (
@@ -125,6 +129,12 @@ export default function BookDetailPage() {
           <div className="lg:col-span-3">
             {/* Tags */}
             <div className="flex items-center flex-wrap gap-2 mb-4">
+              {book.isPremium && (
+                <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-gradient-to-r from-amber-500/20 to-yellow-500/20 border border-amber-500/40 text-amber-400 text-xs font-bold shadow-sm shadow-amber-900/20">
+                  <Crown size={11} />
+                  Premium
+                </span>
+              )}
               {book.genre && <Badge variant="default">{book.genre}</Badge>}
               {!book.isPaid && <Badge variant="free">FREE</Badge>}
               {book.isbn && <Badge variant="info">ISBN: {book.isbn}</Badge>}

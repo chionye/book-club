@@ -131,7 +131,7 @@ router.post('/admin', authenticate, uploadBookWithCover.fields([
   { name: 'coverImage', maxCount: 1 },
 ]), async (req, res) => {
   try {
-    const { title, author, description, genre, price, isPaid, isPublished, pages, language, isbn, previewText, tags } = req.body;
+    const { title, author, description, genre, price, isPaid, isPublished, isPremium, pages, language, isbn, previewText, tags } = req.body;
 
     if (!req.files?.bookFile) {
       return res.status(400).json({ success: false, message: 'Book file is required' });
@@ -148,6 +148,7 @@ router.post('/admin', authenticate, uploadBookWithCover.fields([
       price: parseFloat(price) || 0,
       isPaid: isPaid === 'true' || isPaid === true,
       isPublished: isPublished !== 'false' && isPublished !== false,
+      isPremium: isPremium === 'true' || isPremium === true,
       filePath: bookFile.path,
       fileName: bookFile.originalname,
       fileSize: bookFile.size,
@@ -176,7 +177,7 @@ router.put('/admin/:id', authenticate, uploadBookWithCover.fields([
     const book = await Book.findByPk(req.params.id);
     if (!book) return res.status(404).json({ success: false, message: 'Book not found' });
 
-    const { title, author, description, genre, price, isPaid, isPublished, pages, language, isbn, previewText, tags } = req.body;
+    const { title, author, description, genre, price, isPaid, isPublished, isPremium, pages, language, isbn, previewText, tags } = req.body;
 
     const updates = {
       title: title || book.title,
@@ -186,6 +187,7 @@ router.put('/admin/:id', authenticate, uploadBookWithCover.fields([
       price: price !== undefined ? parseFloat(price) : book.price,
       isPaid: isPaid !== undefined ? (isPaid === 'true' || isPaid === true) : book.isPaid,
       isPublished: isPublished !== undefined ? (isPublished !== 'false' && isPublished !== false) : book.isPublished,
+      isPremium: isPremium !== undefined ? (isPremium === 'true' || isPremium === true) : book.isPremium,
       pages: pages ? parseInt(pages) : book.pages,
       language: language || book.language,
       isbn: isbn || book.isbn,
