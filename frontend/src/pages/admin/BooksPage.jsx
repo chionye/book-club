@@ -167,7 +167,7 @@ export default function BooksPage() {
 
                     {/* Actions */}
                     <td className="px-6 py-4">
-                      <div className="flex items-center justify-end gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                      <div className="flex items-center justify-end gap-1">
                         <button
                           onClick={() => handleEdit(book)}
                           className="p-2 rounded-xl text-slate-400 hover:text-purple-400 hover:bg-purple-500/10 transition-all"
